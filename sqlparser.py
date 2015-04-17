@@ -1,9 +1,11 @@
-from pyparsing import alphas, alphanums, delimitedList, Literal, Keyword, Word
+from pyparsing import alphas, alphanums, delimitedList, Group, Literal, Keyword, \
+    Suppress, Word
 
 class SqlParser(object):
     def __init__(self):
         # literals
         star = Literal('*')
+        comma = Suppress(',')
 
         # indentifiers
         identifier = Word(alphas, alphanums+'_').setName("identifier")
@@ -11,7 +13,8 @@ class SqlParser(object):
         # select clause
         column_name = identifier.copy().setName("column_name")
         select = Keyword('select', caseless=1)
-        select_clause = (star | column_name).setResultsName('select_clause')
+        select_clause = (star | Group(delimitedList(column_name, comma)))\
+            .setResultsName('select_clause')
 
         # from clause
         from_  = Keyword('from', caseless=1)
