@@ -29,19 +29,22 @@ class SqlParser(object):
     def parse(self, sql):
         return self.select_stmt.parseString(sql) 
 
-def test():
-    TESTSQL = 'select * from books'
+    def format(self, parser):
+        o = ''
+        o += 'select\n'
+        o += '   ' + ', '.join(map(str, list(
+                    [x[0] for x in parser.select_clause]))) + '\n'
+        o +=  'from\n'
+        o +=  '   ' + ', '.join(map(str, list(parser.from_clause))) + '\n'
+        return o
 
-    
+
+def test():
+    TESTSQL = 'select b.id, b.name from books b'
     results = SqlParser().parse(TESTSQL);
     print TESTSQL, '->', results
-
     print 'select_clause:', results.select_clause
-    #print '\n'.join(sorted([x for x in dir(results)]))
     print 'from_clause:', results.from_clause
-    for token in results:
-        print token
-        #print dir(token)
-
+    print SqlParser().format(results)
 if __name__ == '__main__':
     test()
