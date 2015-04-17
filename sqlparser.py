@@ -19,7 +19,7 @@ class SqlParser(object):
 
         # from clause
         from_  = Keyword('from', caseless=1)
-        table_name =  delimitedList(identifier + Optional(alias))
+        table_name =  delimitedList(identifier + Optional(alias), comma)
         from_clause = table_name.setResultsName('from_clause')
 
         # select statment
