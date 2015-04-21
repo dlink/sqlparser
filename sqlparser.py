@@ -12,8 +12,10 @@ class SqlParser(object):
         alias      = identifier.copy().setResultsName('alias')
 
         # select clause
-        column_name = Combine(Optional(alias + '.') + identifier)\
-            .setResultsName('column_name')
+        column_name = Combine(Optional(alias + '.') +
+                              identifier +
+                              Optional(' as ' + identifier))\
+                              .setResultsName('column_name')
         select = Keyword('select', caseless=1)
         select_clause = (star | Group(delimitedList(column_name, comma)))\
             .setResultsName('select_clause')
