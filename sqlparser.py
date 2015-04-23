@@ -1,15 +1,18 @@
-from pyparsing import alphas, alphanums, Combine, delimitedList, Group, Literal, \
-    Keyword, Optional, Suppress, Word
+#!/usr/bin/env python
+
+from pyparsing import alphas, alphanums, Combine, delimitedList, Group, \
+    Literal, Keyword, Optional, Suppress, Word
 
 class SqlParser(object):
+
     def __init__(self):
         # literals
         star = Literal('*')
         comma = Suppress(',')
 
         # indentifiers
-        identifier = Word(alphas, alphanums+'_').setResultsName('identifier')
-        alias      = identifier.copy().setResultsName('alias')
+        identifier = Word(alphas, alphanums+'_')
+        alias      = identifier.copy()
 
         # select clause
         column_name = Combine(Optional(alias + '.') +
@@ -48,5 +51,11 @@ def test():
     print 'select_clause:', results.select_clause
     print 'from_clause:', results.from_clause
     print SqlParser().format(results)
+
 if __name__ == '__main__':
-    test()
+    #test()
+    import sys
+    filename = sys.argv[1]
+    print SqlParser().parse(open(filename, 'r').read())
+
+

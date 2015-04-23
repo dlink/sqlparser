@@ -20,28 +20,28 @@ class TestSqlParser(unittest.TestCase):
 
     def testSql2(self):
         self._process(SELECT2,
-                     ['select', [['id']], 'from', 'books'],
-                     [['id']],
+                     ['select', ['id'], 'from', 'books'],
+                     ['id'],
                      ['books'])
 
     def testSql3(self):
         self._process(SELECT3,
-                     ['select', [['id'], ['name']], 'from', 'books'],
-                     [['id'], ['name']],
+                     ['select', ['id', 'name'], 'from', 'books'],
+                     ['id', 'name'],
                      ['books'])
 
     def testSql4(self):
         self._process(SELECT4,
-                      ['select', [['b.id'], ['b.name']], 'from', 'books', 'b'],
-                      [['b.id'], ['b.name']],
+                      ['select', ['b.id', 'b.name'], 'from', 'books', 'b'],
+                      ['b.id', 'b.name'],
                       ['books', 'b'])
 
 
     def testSql5(self):
         self._process(SELECT5,
-                      ['select', [['b.id as book_id'], ['b.name as title']],
+                      ['select', ['b.id as book_id', 'b.name as title'],
                        'from', 'books', 'b'],
-                      [['b.id as book_id'], ['b.name as title']],
+                      ['b.id as book_id', 'b.name as title'],
                       ['books', 'b'])
 
     def _process(self, sql, parsed_sql, select_clause, from_clause):
